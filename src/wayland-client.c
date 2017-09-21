@@ -666,12 +666,11 @@ wl_proxy_marshal_array_constructor_versioned(struct wl_proxy *proxy,
 	return new_proxy;
 }
 
-
 /** Prepare a request to be sent to the compositor
  *
  * \param proxy The proxy object
  * \param opcode Opcode of the request to be sent
- * \param ... Extra arguments for the given request
+ * \param ap Extra arguments for the given request
  *
  * This function is similar to wl_proxy_marshal_constructor(), except
  * it doesn't create proxies for new-id arguments.
@@ -683,10 +682,9 @@ wl_proxy_marshal_array_constructor_versioned(struct wl_proxy *proxy,
  * \memberof wl_proxy
  */
 WL_EXPORT void
-wl_proxy_marshal(struct wl_proxy *proxy, uint32_t opcode, ...)
+wl_proxy_marshal(struct wl_proxy *proxy, uint32_t opcode, va_list ap)
 {
 	union wl_argument args[WL_CLOSURE_MAX_ARGS];
-	va_list ap;
 
 	va_start(ap, opcode);
 	wl_argument_from_va_list(proxy->object.interface->methods[opcode].signature,
@@ -701,7 +699,7 @@ wl_proxy_marshal(struct wl_proxy *proxy, uint32_t opcode, ...)
  * \param proxy The proxy object
  * \param opcode Opcode of the request to be sent
  * \param interface The interface to use for the new proxy
- * \param ... Extra arguments for the given request
+ * \param ap Extra arguments for the given request
  * \return A new wl_proxy for the new_id argument or NULL on error
  *
  * This function translates a request given an opcode, an interface and extra
@@ -720,10 +718,9 @@ wl_proxy_marshal(struct wl_proxy *proxy, uint32_t opcode, ...)
  */
 WL_EXPORT struct wl_proxy *
 wl_proxy_marshal_constructor(struct wl_proxy *proxy, uint32_t opcode,
-			     const struct wl_interface *interface, ...)
+			     const struct wl_interface *interface, va_list ap)
 {
 	union wl_argument args[WL_CLOSURE_MAX_ARGS];
-	va_list ap;
 
 	va_start(ap, interface);
 	wl_argument_from_va_list(proxy->object.interface->methods[opcode].signature,
@@ -734,14 +731,13 @@ wl_proxy_marshal_constructor(struct wl_proxy *proxy, uint32_t opcode,
 						  args, interface);
 }
 
-
 /** Prepare a request to be sent to the compositor
  *
  * \param proxy The proxy object
  * \param opcode Opcode of the request to be sent
  * \param interface The interface to use for the new proxy
  * \param version The protocol object version of the new proxy
- * \param ... Extra arguments for the given request
+ * \param ap Extra arguments for the given request
  * \return A new wl_proxy for the new_id argument or NULL on error
  *
  * Translates the request given by opcode and the extra arguments into the
@@ -759,10 +755,9 @@ wl_proxy_marshal_constructor(struct wl_proxy *proxy, uint32_t opcode,
 WL_EXPORT struct wl_proxy *
 wl_proxy_marshal_constructor_versioned(struct wl_proxy *proxy, uint32_t opcode,
 				       const struct wl_interface *interface,
-				       uint32_t version, ...)
+				       uint32_t version, va_list ap)
 {
 	union wl_argument args[WL_CLOSURE_MAX_ARGS];
-	va_list ap;
 
 	va_start(ap, version);
 	wl_argument_from_va_list(proxy->object.interface->methods[opcode].signature,

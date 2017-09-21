@@ -123,7 +123,13 @@ void
 wl_event_queue_destroy(struct wl_event_queue *queue);
 
 void
-wl_proxy_marshal(struct wl_proxy *p, uint32_t opcode, ...);
+wl_proxy_marshal(struct wl_proxy *p, uint32_t opcode, va_list ap);
+
+inline void
+wl_proxy_marshal(struct wl_proxy *p, uint32_t opcode, ...) {
+	va_list ap;
+	wl_proxy_marshal(p, opcode, ap);
+}
 
 void
 wl_proxy_marshal_array(struct wl_proxy *p, uint32_t opcode,
@@ -143,14 +149,33 @@ struct wl_proxy *
 wl_proxy_marshal_constructor(struct wl_proxy *proxy,
 			     uint32_t opcode,
 			     const struct wl_interface *interface,
-			     ...);
+			     va_list ap);
+
+inline struct wl_proxy *
+wl_proxy_marshal_constructor(struct wl_proxy *proxy,
+			     uint32_t opcode,
+			     const struct wl_interface *interface,
+			     ...) {
+	va_list ap;
+	return wl_proxy_marshal_constructor(proxy, opcode, interface, ap);
+}
 
 struct wl_proxy *
 wl_proxy_marshal_constructor_versioned(struct wl_proxy *proxy,
 				       uint32_t opcode,
 				       const struct wl_interface *interface,
 				       uint32_t version,
-				       ...);
+				       va_list ap);
+
+inline struct wl_proxy *
+wl_proxy_marshal_constructor_versioned(struct wl_proxy *proxy,
+				       uint32_t opcode,
+				       const struct wl_interface *interface,
+				       uint32_t version,
+				       ...) {
+	va_list ap;
+	return wl_proxy_marshal_constructor_versioned(proxy, opcode, interface, version, ap);
+}
 
 struct wl_proxy *
 wl_proxy_marshal_array_constructor(struct wl_proxy *proxy,
